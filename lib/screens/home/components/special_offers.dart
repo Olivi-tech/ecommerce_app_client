@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shop_app/constants/app_colors.dart';
 import 'package:shop_app/db_services/ecommerce_services.dart';
 import 'package:shop_app/models/deals_model.dart';
+import 'package:shop_app/screens/cart/components/custom_text.dart';
 import 'package:shop_app/screens/products/products_screen.dart';
 import 'section_title.dart';
 
@@ -50,7 +51,7 @@ class _SpecialOffersState extends State<SpecialOffers> {
               // Set to keep track of displayed categories
               Set<String> displayedCategories = Set();
               return SizedBox(
-                height: height * 0.15,
+                height: height * 0.39,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: deals!.length,
@@ -62,7 +63,8 @@ class _SpecialOffersState extends State<SpecialOffers> {
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         child: SpecialOfferCard(
                           image: deals[index].imageUrl!,
-                          category: category,
+                          title: deals[index].title!,
+                          price: deals[index].price,
                           press: () {
                             Navigator.pushNamed(
                               context,
@@ -72,8 +74,7 @@ class _SpecialOffersState extends State<SpecialOffers> {
                         ),
                       );
                     } else {
-                      // Skip displaying if category is already displayed
-                      return SizedBox.shrink();
+                      return const SizedBox.shrink();
                     }
                   },
                 ),
@@ -87,60 +88,84 @@ class _SpecialOffersState extends State<SpecialOffers> {
 }
 
 class SpecialOfferCard extends StatelessWidget {
-  final String category, image;
-
+  final String title, image;
+  final num? price;
   final GestureTapCallback press;
   const SpecialOfferCard({
     Key? key,
-    required this.category,
+    required this.price,
+    required this.title,
     required this.image,
     required this.press,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    double width = size.width;
+    double height = size.height;
     return GestureDetector(
       onTap: press,
       child: SizedBox(
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-          child: Stack(
+        child: Container(
+          height: height * 0.5,
+          width: width * 0.5,
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(12)),
+            color: AppColors.greyColor,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.network(
-                image,
-                fit: BoxFit.cover,
-              ),
-              Container(
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.black54,
-                      Colors.black38,
-                      Colors.black26,
-                      Colors.transparent,
-                    ],
+              SizedBox(
+                height: height * 0.25,
+                width: width,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.network(
+                    image,
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 15,
-                  vertical: 10,
+                padding: const EdgeInsets.only(left: 10, top: 5),
+                child: Text(
+                  title,
+                  style: const TextStyle(
+                      color: AppColors.black,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700),
                 ),
-                child: Text.rich(
-                  TextSpan(
-                    style: const TextStyle(color: Colors.white),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 10, top: 5),
+                child: Text(
+                  '\$${price}',
+                  style: const TextStyle(
+                      color: AppColors.black,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 10, top: 5),
+                child: SizedBox(
+                  width: width * 0.6,
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      TextSpan(
-                        text: "$category\n",
-                        style: const TextStyle(
-                          fontSize: 18,
-                          color: AppColors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      Text(
+                        'In Stock',
+                        style: TextStyle(
+                            color: AppColors.black,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400),
                       ),
+                      Icon(
+                        Icons.add_shopping_cart_rounded,
+                        color: AppColors.black,
+                      )
                     ],
                   ),
                 ),

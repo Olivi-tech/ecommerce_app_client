@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop_app/constants/app_colors.dart';
 
 import 'components/categories.dart';
 import 'components/discount_banner.dart';
@@ -13,20 +14,18 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(vertical: 16),
-          child: Column(
-            children: [
-              HomeHeader(),
-              DiscountBanner(),
-              Categories(),
-              SpecialOffers(),
-              SizedBox(height: 20),
-              PopularProducts(),
-              SizedBox(height: 20),
-            ],
-          ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            HomeHeader(),
+            SizedBox(height: 20),
+            Categories(),
+            DiscountBanner(),
+            SpecialOffers(),
+            SizedBox(height: 20),
+            PopularProducts(),
+            SizedBox(height: 20),
+          ],
         ),
       ),
     );

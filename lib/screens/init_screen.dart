@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shop_app/constants.dart';
+import 'package:shop_app/constants/app_colors.dart';
 import 'package:shop_app/screens/favorite/favorite_screen.dart';
 import 'package:shop_app/screens/home/home_screen.dart';
 import 'package:shop_app/screens/profile/profile_screen.dart';
 
-const Color inActiveIconColor = Color(0xFFB6B6B6);
+const Color inActiveIconColor = AppColors.black;
 
 class InitScreen extends StatefulWidget {
   const InitScreen({super.key});
-
   static String routeName = "/";
-
   @override
   State<InitScreen> createState() => _InitScreenState();
 }
 
 class _InitScreenState extends State<InitScreen> {
   int currentSelectedIndex = 0;
-
   void updateCurrentIndex(int index) {
     setState(() {
       currentSelectedIndex = index;
@@ -33,12 +31,12 @@ class _InitScreenState extends State<InitScreen> {
     ),
     const ProfileScreen()
   ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: pages[currentSelectedIndex],
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: AppColors.greyColor,
         onTap: updateCurrentIndex,
         currentIndex: currentSelectedIndex,
         showSelectedLabels: false,

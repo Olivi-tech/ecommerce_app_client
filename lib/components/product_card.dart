@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../constants.dart';
 import '../models/Product.dart';
-
 class ProductCard extends StatelessWidget {
   const ProductCard({
     Key? key,
@@ -11,11 +10,9 @@ class ProductCard extends StatelessWidget {
     required this.product,
     required this.onPress,
   }) : super(key: key);
-
   final double width, aspectRatio;
   final Product product;
   final VoidCallback onPress;
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -76,7 +73,6 @@ class ProductCard extends StatelessWidget {
                           BlendMode.srcIn),
                     ),
                   ),
-
                 ),
               ],
             )

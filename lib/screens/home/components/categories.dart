@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/cupertino.dart';
+import 'package:shop_app/constants/app_colors.dart';
 import 'package:shop_app/db_services/ecommerce_services.dart';
 import 'package:shop_app/models/ecommerce_product_model.dart';
 
@@ -24,38 +25,49 @@ class _CategoriesState extends State<Categories> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CupertinoActivityIndicator();
         } else if (snapshot.hasData) {
-          // Check if snapshot has data
-          final List<EcommerceProductModel>? categories = snapshot.data;
+          final List<EcommerceProductModel>? products = snapshot.data;
 
-          if (categories != null && categories.isNotEmpty) {
-            // Check if categories is not null and not empty
-            return SizedBox(
-              height: 90,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: categories.length,
-                  itemBuilder: (context, index) {
-                    log('the image url is ${categories[index].imageUrl!}');
-                    log('the category name is ${categories[index].category}');
-                    return Padding(
-                      padding: const EdgeInsets.only(left: 10, right: 10),
-                      child: CategoryCard(
-                        imageUrl: categories[index].imageUrl!,
-                        text: categories[index].category!,
-                        press: () {},
-                      ),
-                    );
-                  },
+          if (products != null && products.isNotEmpty) {
+            final Set<String> uniqueCategories = {};
+            final List<EcommerceProductModel> uniqueProducts = [];
+
+            for (var product in products) {
+              if (uniqueCategories.add(product.category!)) {
+                uniqueProducts.add(product);
+              }
+            }
+
+            if (uniqueProducts.isNotEmpty) {
+              return SizedBox(
+                height: 90,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: uniqueProducts.length,
+                    itemBuilder: (context, index) {
+                      log('the image url is ${uniqueProducts[index].imageUrl!}');
+                      log('the category name is ${uniqueProducts[index].category}');
+                      return Padding(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        child: CategoryCard(
+                          imageUrl: uniqueProducts[index].imageUrl!,
+                          text: uniqueProducts[index].category!,
+                          press: () {},
+                        ),
+                      );
+                    },
+                  ),
                 ),
-              ),
-            );
+              );
+            } else {
+              return const Text('No data available');
+            }
           } else {
-            return const Text('No data available'); // Handle empty data case
+            return const Text('No data available');
           }
         } else {
-          return const Text('no data available');
+          return const Text('No data available');
         }
       },
     );
@@ -80,21 +92,28 @@ class CategoryCard extends StatelessWidget {
       child: Column(
         children: [
           Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(13),
               height: 56,
               width: 56,
               decoration: BoxDecoration(
-                color: const Color(0xFFFFECDF),
-                borderRadius: BorderRadius.circular(10),
+                color: AppColors.greyColor,
+                borderRadius: BorderRadius.circular(30),
               ),
               child: SizedBox(
-                child: Image.network(
-                  imageUrl,
-                  fit: BoxFit.fill,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image.network(
+                    imageUrl,
+                    fit: BoxFit.fill,
+                  ),
                 ),
               )),
           const SizedBox(height: 4),
-          Text(text, textAlign: TextAlign.center)
+          Text(
+            text,
+            textAlign: TextAlign.center,
+            style: const TextStyle(color: AppColors.black),
+          )
         ],
       ),
     );
