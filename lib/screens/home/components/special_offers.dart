@@ -1,10 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
+import 'package:provider/provider.dart';
 import 'package:shop_app/constants/app_colors.dart';
 import 'package:shop_app/db_services/ecommerce_services.dart';
 import 'package:shop_app/models/deals_model.dart';
 import 'package:shop_app/screens/cart/components/custom_text.dart';
-import 'package:shop_app/screens/products/products_screen.dart';
+import 'package:shop_app/screens/products/deals_products_screen.dart';
+import '../../../providers/favourite_provider.dart';
+import '../../products/see_more_deals.dart';
 import 'section_title.dart';
 
 class SpecialOffers extends StatefulWidget {
@@ -38,7 +42,13 @@ class _SpecialOffersState extends State<SpecialOffers> {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: SectionTitle(
             title: "Special for you",
-            press: () {},
+            press: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const DealsScreen(),
+                  ));
+            },
           ),
         ),
         StreamBuilder<List<DealModel>>(
@@ -48,7 +58,6 @@ class _SpecialOffersState extends State<SpecialOffers> {
               return const CupertinoActivityIndicator();
             } else {
               final deals = snapshot.data;
-              // Set to keep track of displayed categories
               Set<String> displayedCategories = Set();
               return SizedBox(
                 height: height * 0.39,
@@ -65,10 +74,14 @@ class _SpecialOffersState extends State<SpecialOffers> {
                           image: deals[index].imageUrl!,
                           title: deals[index].title!,
                           price: deals[index].price,
+                          category: category,
                           press: () {
-                            Navigator.pushNamed(
+                            Navigator.push(
                               context,
-                              ProductsScreen.routeName,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    DealsPRoductScreen(category: category),
+                              ),
                             );
                           },
                         ),
@@ -87,25 +100,34 @@ class _SpecialOffersState extends State<SpecialOffers> {
   }
 }
 
-class SpecialOfferCard extends StatelessWidget {
-  final String title, image;
+class SpecialOfferCard extends StatefulWidget {
+  final String title, image, category;
   final num? price;
+
   final GestureTapCallback press;
   const SpecialOfferCard({
     Key? key,
     required this.price,
     required this.title,
     required this.image,
+    required this.category,
     required this.press,
   }) : super(key: key);
 
+  @override
+  State<SpecialOfferCard> createState() => _SpecialOfferCardState();
+}
+
+bool isFavorite = false;
+
+class _SpecialOfferCardState extends State<SpecialOfferCard> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     double width = size.width;
     double height = size.height;
     return GestureDetector(
-      onTap: press,
+      onTap: widget.press,
       child: SizedBox(
         child: Container(
           height: height * 0.5,
@@ -118,12 +140,12 @@ class SpecialOfferCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                height: height * 0.25,
+                height: height * 0.2,
                 width: width,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(12),
                   child: Image.network(
-                    image,
+                    widget.image,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -131,7 +153,7 @@ class SpecialOfferCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 10, top: 5),
                 child: Text(
-                  title,
+                  widget.title,
                   style: const TextStyle(
                       color: AppColors.black,
                       fontSize: 18,
@@ -141,7 +163,7 @@ class SpecialOfferCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 10, top: 5),
                 child: Text(
-                  '\$${price}',
+                  '\$${widget.price}',
                   style: const TextStyle(
                       color: AppColors.black,
                       fontSize: 18,
@@ -162,9 +184,12 @@ class SpecialOfferCard extends StatelessWidget {
                             fontSize: 12,
                             fontWeight: FontWeight.w400),
                       ),
-                      Icon(
-                        Icons.add_shopping_cart_rounded,
-                        color: AppColors.black,
+                      Padding(
+                        padding: EdgeInsets.only(right: 5),
+                        child: Icon(
+                          Icons.add_shopping_cart_rounded,
+                          color: AppColors.black,
+                        ),
                       )
                     ],
                   ),

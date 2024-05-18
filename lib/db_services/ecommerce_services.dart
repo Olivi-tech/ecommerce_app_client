@@ -36,4 +36,26 @@ class EcommerceServices {
       }).toList();
     });
   }
+
+  static Future<void> updateFavouriteStatus(
+      {required String? docId, required bool isCurrentlyFavourite}) async {
+    if (isCurrentlyFavourite) {
+      // First un-feature all events
+      await FirebaseFirestore.instance
+          .collection('Favourties')
+          .where('isFavourite', isEqualTo: true)
+          .get()
+          .then((querySnapshot) {
+        querySnapshot.docs.forEach((doc) {
+          doc.reference.update({'isFavourite': false});
+        });
+      });
+    }
+
+    // Feature the selected event
+    await FirebaseFirestore.instance
+        .collection('Favourties')
+        .doc(docId)
+        .update({'isFavourite': isCurrentlyFavourite});
+  }
 }

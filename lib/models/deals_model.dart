@@ -9,6 +9,7 @@ class DealModel {
   String? description;
   String? category;
   String? duration;
+  bool? isFavourite;
   num? price;
   num? deliveryCharges;
   num? discount;
@@ -17,6 +18,7 @@ class DealModel {
     this.imageUrl,
     this.productCode,
     this.title,
+    this.isFavourite = false,
     this.description,
     this.category,
     this.duration,
@@ -34,6 +36,7 @@ class DealModel {
       'description': description,
       'category': category,
       'duration': duration,
+      'isFavourite': isFavourite,
       'price': price,
       'deliveryCharges': deliveryCharges,
       'discount': discount,

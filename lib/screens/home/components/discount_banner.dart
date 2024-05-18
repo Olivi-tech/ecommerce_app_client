@@ -43,7 +43,6 @@ class _DiscountBannerState extends State<DiscountBanner> {
               return const CupertinoActivityIndicator();
             } else {
               final data = snapshot.data;
-
               return SizedBox(
                 height: 100,
                 child: ListView.builder(
@@ -57,7 +56,7 @@ class _DiscountBannerState extends State<DiscountBanner> {
                         style: const TextStyle(color: Colors.black),
                         children: [
                           TextSpan(
-                              text: "A ${data![index].season} Surpise\n",
+                              text: "A ${data![index].season} Surprise\n",
                               style: const TextStyle(color: AppColors.black)),
                           TextSpan(
                             text: "Cashback ${data[index].off}",

@@ -1,8 +1,10 @@
 import 'dart:developer';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:shop_app/constants/app_colors.dart';
 import 'package:shop_app/db_services/ecommerce_services.dart';
 import 'package:shop_app/models/ecommerce_product_model.dart';
+import 'package:shop_app/screens/products/see_more_products.dart';
 
 class Categories extends StatefulWidget {
   const Categories({super.key});
@@ -53,7 +55,16 @@ class _CategoriesState extends State<Categories> {
                         child: CategoryCard(
                           imageUrl: uniqueProducts[index].imageUrl!,
                           text: uniqueProducts[index].category!,
-                          press: () {},
+                          press: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SeeMoreProduct(
+                                  category: uniqueProducts[index].category!,
+                                ),
+                              ),
+                            );
+                          },
                         ),
                       );
                     },
