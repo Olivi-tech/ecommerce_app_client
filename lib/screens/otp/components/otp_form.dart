@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop_app/constants/app_routes.dart';
 
 import '../../../constants.dart';
 
@@ -106,7 +107,9 @@ class _OtpFormState extends State<OtpForm> {
           ),
           SizedBox(height: MediaQuery.of(context).size.height * 0.15),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, AppRoutes.initScreen);
+            },
             child: const Text("Continue"),
           ),
         ],

@@ -6,7 +6,6 @@ import 'package:shop_app/db_services/ecommerce_services.dart';
 
 import 'package:shop_app/models/deals_model.dart';
 import 'package:shop_app/models/ecommerce_product_model.dart';
-import 'package:shop_app/screens/cart/components/custom_text.dart';
 
 import '../../Widgets/custom_appbar.dart';
 

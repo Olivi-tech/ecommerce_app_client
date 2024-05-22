@@ -7,8 +7,9 @@ import 'package:shop_app/screens/favorite/favorite_screen.dart';
 import 'package:shop_app/screens/home/home_screen.dart';
 import 'package:shop_app/screens/profile/profile_screen.dart';
 import '../providers/bottom_navigation_provider.dart';
+import 'cart/cart_screen.dart';
 
-const Color inActiveIconColor = AppColors.black;
+const Color inActiveIconColor = AppColors.darkGrey;
 
 class InitScreen extends StatelessWidget {
   const InitScreen({super.key});
@@ -20,6 +21,7 @@ class InitScreen extends StatelessWidget {
     Center(
       child: Text("Chat"),
     ),
+    CartScreen(),
     ProfileScreen(),
   ];
 
@@ -43,14 +45,14 @@ class InitScreen extends StatelessWidget {
             items: [
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
-                  "assets/icons/Shop Icon.svg",
+                  "assets/icons/home.svg",
                   colorFilter: const ColorFilter.mode(
                     inActiveIconColor,
                     BlendMode.srcIn,
                   ),
                 ),
                 activeIcon: SvgPicture.asset(
-                  "assets/icons/Shop Icon.svg",
+                  "assets/icons/home.svg",
                   colorFilter: const ColorFilter.mode(
                     kPrimaryColor,
                     BlendMode.srcIn,
@@ -59,53 +61,46 @@ class InitScreen extends StatelessWidget {
                 label: "Home",
               ),
               BottomNavigationBarItem(
-                icon: SvgPicture.asset(
-                  "assets/icons/Heart Icon.svg",
-                  colorFilter: const ColorFilter.mode(
-                    inActiveIconColor,
-                    BlendMode.srcIn,
-                  ),
+                icon: Image.asset(
+                  "assets/icons/favourite.png",
+                  color: inActiveIconColor,
                 ),
-                activeIcon: SvgPicture.asset(
-                  "assets/icons/Heart Icon.svg",
-                  colorFilter: const ColorFilter.mode(
-                    kPrimaryColor,
-                    BlendMode.srcIn,
-                  ),
+                activeIcon: Image.asset(
+                  "assets/icons/favourite.png",
+                  color: kPrimaryColor,
                 ),
                 label: "Fav",
               ),
-              BottomNavigationBarItem(
-                icon: SvgPicture.asset(
-                  "assets/icons/Chat bubble Icon.svg",
-                  colorFilter: const ColorFilter.mode(
-                    inActiveIconColor,
-                    BlendMode.srcIn,
-                  ),
+              const BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.message_sharp,
+                  color: inActiveIconColor,
                 ),
-                activeIcon: SvgPicture.asset(
-                  "assets/icons/Chat bubble Icon.svg",
-                  colorFilter: const ColorFilter.mode(
-                    kPrimaryColor,
-                    BlendMode.srcIn,
-                  ),
+                activeIcon: Icon(
+                  Icons.chat,
+                  color: kPrimaryColor,
                 ),
                 label: "Chat",
               ),
-              BottomNavigationBarItem(
-                icon: SvgPicture.asset(
-                  "assets/icons/User Icon.svg",
-                  colorFilter: const ColorFilter.mode(
-                    inActiveIconColor,
-                    BlendMode.srcIn,
-                  ),
+              const BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.shopping_cart,
+                  color: inActiveIconColor,
                 ),
-                activeIcon: SvgPicture.asset(
-                  "assets/icons/User Icon.svg",
-                  colorFilter: const ColorFilter.mode(
-                    kPrimaryColor,
-                    BlendMode.srcIn,
-                  ),
+                activeIcon: Icon(
+                  Icons.shopping_cart,
+                  color: kPrimaryColor,
+                ),
+                label: "Cart",
+              ),
+              const BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.person_2_outlined,
+                  color: inActiveIconColor,
+                ),
+                activeIcon: Icon(
+                  Icons.person_2_outlined,
+                  color: kPrimaryColor,
                 ),
                 label: "Profile",
               ),

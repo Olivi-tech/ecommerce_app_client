@@ -5,7 +5,6 @@ import 'package:shop_app/constants/app_colors.dart';
 import 'package:shop_app/db_services/ecommerce_services.dart';
 
 import 'package:shop_app/models/deals_model.dart';
-import 'package:shop_app/screens/cart/components/custom_text.dart';
 
 import '../../Widgets/custom_appbar.dart';
 

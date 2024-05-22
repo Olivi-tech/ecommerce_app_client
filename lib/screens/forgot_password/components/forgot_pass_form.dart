@@ -1,23 +1,31 @@
 import 'package:flutter/material.dart';
-
+import 'package:shop_app/utils/app_utils.dart';
+import '../../../Widgets/custom_button.dart';
 import '../../../components/custom_surfix_icon.dart';
 import '../../../components/form_error.dart';
 import '../../../components/no_account_text.dart';
 import '../../../constants.dart';
+import '../../../constants/app_colors.dart';
+import '../../../db_services/firebase_auth.dart';
 
 class ForgotPassForm extends StatefulWidget {
   const ForgotPassForm({super.key});
-
   @override
   _ForgotPassFormState createState() => _ForgotPassFormState();
 }
 
 class _ForgotPassFormState extends State<ForgotPassForm> {
   final _formKey = GlobalKey<FormState>();
+  final ValueNotifier<bool> loadingNotifier = ValueNotifier(false);
+  TextEditingController emailController = TextEditingController();
   List<String> errors = [];
   String? email;
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
+    double height = size.height;
+    double width = size.width;
     return Form(
       key: _formKey,
       child: Column(
@@ -53,22 +61,40 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
             },
             decoration: const InputDecoration(
               hintText: "Enter your email",
-              // If  you are using latest version of flutter then lable text and hint text shown like this
-              // if you r using flutter less then 1.20.* then maybe this is not working properly
               floatingLabelBehavior: FloatingLabelBehavior.always,
               suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
             ),
           ),
-          const SizedBox(height: 8),
-          FormError(errors: errors),
-          const SizedBox(height: 8),
-          ElevatedButton(
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                // Do what you want to do
-              }
-            },
-            child: const Text("Continue"),
+          SizedBox(
+            height: height * 0.03,
+          ),
+          ValueListenableBuilder(
+            valueListenable: loadingNotifier,
+            builder: (context, isLoading, child) => CustomButton(
+              fixedHeight: height * 0.07,
+              fixedWidth: width,
+              btnText: 'Continue',
+              loading: loadingNotifier.value,
+              backgroundColor: AppColors.red,
+              weight: FontWeight.w700,
+              textColor: AppColors.white,
+              textSize: 13,
+              onPressed: () async {
+                if (_formKey.currentState!.validate()) {
+                  loadingNotifier.value = true;
+                  String result = await AuthServices.forgotPassword(
+                      email: emailController.text, context: context);
+                  if (result == 'success') {
+                    AppUtils.toastMessage(
+                        'Password reset email send successfully');
+                  } else {
+                    AppUtils.toastMessage(result);
+                    loadingNotifier.value = false;
+                  }
+                  loadingNotifier.value = false;
+                }
+              },
+            ),
           ),
           const SizedBox(height: 16),
           const NoAccountText(),

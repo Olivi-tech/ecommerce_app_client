@@ -1,21 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
-import 'package:provider/provider.dart';
 import 'package:shop_app/constants/app_colors.dart';
+import 'package:shop_app/constants/app_routes.dart';
 import 'package:shop_app/db_services/ecommerce_services.dart';
 import 'package:shop_app/models/deals_model.dart';
-import 'package:shop_app/screens/cart/components/custom_text.dart';
-import 'package:shop_app/screens/products/deals_products_screen.dart';
-import '../../../providers/favourite_provider.dart';
-import '../../products/see_more_deals.dart';
 import 'section_title.dart';
 
 class SpecialOffers extends StatefulWidget {
   const SpecialOffers({
     Key? key,
   }) : super(key: key);
-
   @override
   State<SpecialOffers> createState() => _SpecialOffersState();
 }
@@ -24,7 +18,6 @@ late Stream<List<DealModel>> fetchDeals;
 
 class _SpecialOffersState extends State<SpecialOffers> {
   Set<String> displayedCategories = {};
-
   @override
   void initState() {
     fetchDeals = EcommerceServices.fetchDeal();
@@ -35,7 +28,6 @@ class _SpecialOffersState extends State<SpecialOffers> {
     Size size = MediaQuery.of(context).size;
     double height = size.height;
     double width = size.width;
-
     return Column(
       children: [
         Padding(
@@ -43,11 +35,7 @@ class _SpecialOffersState extends State<SpecialOffers> {
           child: SectionTitle(
             title: "Special for you",
             press: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const DealsScreen(),
-                  ));
+              Navigator.pushNamed(context, AppRoutes.dealsSeemore);
             },
           ),
         ),
@@ -76,13 +64,8 @@ class _SpecialOffersState extends State<SpecialOffers> {
                           price: deals[index].price,
                           category: category,
                           press: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    DealsPRoductScreen(category: category),
-                              ),
-                            );
+                            Navigator.pushNamed(context, AppRoutes.deals,
+                                arguments: {'category': category});
                           },
                         ),
                       );

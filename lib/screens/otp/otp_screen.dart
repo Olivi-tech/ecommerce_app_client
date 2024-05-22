@@ -45,13 +45,7 @@ class OtpScreen extends StatelessWidget {
                 const OtpForm(),
                 const SizedBox(height: 20),
                 GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => HomeScreen(),
-                        ));
-                  },
+                  onTap: () {},
                   child: const Text(
                     "Resend OTP Code",
                     style: TextStyle(decoration: TextDecoration.underline),

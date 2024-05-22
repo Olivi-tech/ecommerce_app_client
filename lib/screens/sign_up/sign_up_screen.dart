@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shop_app/constants/app_routes.dart';
+import 'package:shop_app/db_services/firebase_auth.dart';
 
 import '../../components/socal_card.dart';
 import '../../constants.dart';
@@ -35,15 +37,15 @@ class SignUpScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SocalCard(
-                        icon: "assets/icons/google-icon.svg",
-                        press: () {},
+                        icon: "assets/icons/google.svg",
+                        press: () async {
+                          await AuthServices.signInWithGoogle();
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, AppRoutes.initScreen, (route) => false);
+                        },
                       ),
                       SocalCard(
-                        icon: "assets/icons/facebook-2.svg",
-                        press: () {},
-                      ),
-                      SocalCard(
-                        icon: "assets/icons/twitter.svg",
+                        icon: "assets/icons/apple_icon.svg",
                         press: () {},
                       ),
                     ],

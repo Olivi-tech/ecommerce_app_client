@@ -5,6 +5,7 @@ import 'package:shop_app/db_services/ecommerce_services.dart';
 import 'package:shop_app/models/ecommerce_product_model.dart';
 import 'package:shop_app/screens/products/popular_product_screen.dart';
 import 'package:shop_app/screens/products/see_more_products.dart';
+import '../../../constants/app_routes.dart';
 import 'section_title.dart';
 
 class PopularProducts extends StatefulWidget {
@@ -68,14 +69,9 @@ class _PopularProductsState extends State<PopularProducts> {
                           price: products[index].price,
                           category: category,
                           press: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => PopularProductsScreen(
-                                  category: category,
-                                ),
-                              ),
-                            );
+                            Navigator.pushNamed(
+                                context, AppRoutes.popularProduct,
+                                arguments: {'popular_category': category});
                           },
                         ),
                       );

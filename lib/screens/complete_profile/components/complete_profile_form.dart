@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop_app/constants/app_routes.dart';
 import 'package:shop_app/db_services/cloud_firestore.dart';
 
 import '../../../components/custom_surfix_icon.dart';
@@ -136,21 +137,23 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
               // if you r using flutter less then 1.20.* then maybe this is not working properly
               floatingLabelBehavior: FloatingLabelBehavior.always,
               suffixIcon:
-              CustomSurffixIcon(svgIcon: "assets/icons/Location point.svg"),
+                  CustomSurffixIcon(svgIcon: "assets/icons/Location point.svg"),
             ),
           ),
           FormError(errors: errors),
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                FireStoreServices.addUser(
-                    addressController.text, firstNameController.text,
-                    lastNameController.text, phoneNumberController.text);
+              // if (_formKey.currentState!.validate()) {
+              FireStoreServices.addUser(
+                  addressController.text,
+                  firstNameController.text,
+                  lastNameController.text,
+                  phoneNumberController.text);
 
-                Navigator.pushNamed(context, OtpScreen.routeName);
-              }
+              Navigator.pushNamed(context, AppRoutes.otpScreen);
             },
+            //  },
             child: const Text("Continue"),
           ),
         ],

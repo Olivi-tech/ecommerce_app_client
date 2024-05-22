@@ -1,6 +1,12 @@
 // ignore_for_file: avoid_print
 
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
+import '../utils/app_utils.dart';
 
 class AuthServices {
   static Future<void> signIn(String emailAddress, String password) async {
@@ -16,21 +22,83 @@ class AuthServices {
     }
   }
 
-  static Future<void> signUp(String emailAddress, String password) async {
+  static Future<UserCredential?> signUp({
+    required String email,
+    required String password,
+    required BuildContext context,
+  }) async {
     try {
-      final credential =
+      final credentials =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: emailAddress,
+        email: email,
         password: password,
       );
+
+      if (credentials.user != null) {
+        return credentials;
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
+        AppUtils.toastMessage(
+          'Week password',
+        );
       } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
+        AppUtils.toastMessage('Email already in use');
       }
     } catch (e) {
-      print(e);
+      log('Error: ${e.toString()}');
+    }
+    return null;
+  }
+
+  static Future<bool> login({
+    required String email,
+    required String password,
+    required BuildContext context,
+  }) async {
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+      if (userCredential.user != null) {
+        return true;
+      } else {
+        log('Not Login');
+        return false;
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        AppUtils.toastMessage('No user found for that email.');
+        return false;
+      } else if (e.code == 'wrong-password') {
+        AppUtils.toastMessage('Wrong password provided for that user.');
+        return false;
+      }
+      return false;
     }
   }
+
+  static Future<UserCredential> signInWithGoogle() async {
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
+
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
+
+  static Future<String> forgotPassword(
+      {required String email, required BuildContext context}) async {
+    FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+    // try {
+    await firebaseAuth.sendPasswordResetEmail(email: email);
+    return '..';
+    // } on FirebaseAuthException catch (err) {
+    // return "${err.message}";
+  }
 }
+// }

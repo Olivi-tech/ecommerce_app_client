@@ -12,7 +12,20 @@
           "package_name": "com.example.demo_app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "785606608903-24a25jfcu7v1ihu613g0214qu9th2f3f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.demo_app",
+            "certificate_hash": "d8144db0c96dca6a2ef38f5e923ffe2c1efb959b"
+          }
+        },
+        {
+          "client_id": "785606608903-mka2mfvb2uof9tor8go9993ms1jbq8qt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCfF1gxpvzQ-rQd_k8IspyaU4tbuOWGoDw"
@@ -20,26 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:785606608903:android:4957615d0359ce311142a2",
-        "android_client_info": {
-          "package_name": "com.example.e_commerece_admin_panel"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCfF1gxpvzQ-rQd_k8IspyaU4tbuOWGoDw"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "785606608903-mka2mfvb2uof9tor8go9993ms1jbq8qt.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "785606608903-2nf9e3pksmmhgdjl0ao328soucje0r6b.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.eCommereceAdminPanel"
+              }
+            }
+          ]
         }
       }
     }

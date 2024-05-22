@@ -63,7 +63,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '785606608903',
     projectId: 'e-commerce-8970b',
     storageBucket: 'e-commerce-8970b.appspot.com',
+    androidClientId: '785606608903-24a25jfcu7v1ihu613g0214qu9th2f3f.apps.googleusercontent.com',
+    iosClientId: '785606608903-sb2pueonn3rffa4c7o965f5uh1birsck.apps.googleusercontent.com',
     iosBundleId: 'com.example.demoApp',
   );
-
 }
