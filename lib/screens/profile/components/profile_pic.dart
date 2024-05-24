@@ -1,15 +1,18 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/constants/app_colors.dart';
+import 'package:shop_app/db_services/firebase_auth.dart';
 import 'package:shop_app/providers/image_picker_provider.dart';
 import 'package:shop_app/utils/app_utils.dart';
 import 'package:shop_app/utils/pick_image.dart';
-
-import '../../../db_services/cloud_firestore.dart';
+import 'package:shop_app/db_services/cloud_firestore.dart'; // Ensure this import is correct
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/scheduler.dart';
 
 class ProfilePic extends StatelessWidget {
   const ProfilePic({
@@ -35,15 +38,17 @@ class ProfilePic extends StatelessWidget {
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
                   ),
-                  child: imagePickerProvider.isLoading
-                      ? const Center(child: CircularProgressIndicator())
-                      : imagePickerProvider.pickImage
+                  child: imagePickerProvider.getImageBytes.isNotEmpty ?  CircleAvatar(
+                    backgroundImage: FileImage(File(imagePickerProvider.getImageBytes)),
+                  ):
+                              imagePickerProvider.getImageUrl.isNotEmpty
                           ? ClipRRect(
                               borderRadius: BorderRadius.circular(50),
-                              child: Image.file(
-                                File(imagePickerProvider.getImage),
+                              child:Image.network(
+                                imagePickerProvider.getImageUrl,
                                 fit: BoxFit.cover,
-                              ),
+                              )
+
                             )
                           : Container(
                               decoration: BoxDecoration(
@@ -60,7 +65,7 @@ class ProfilePic extends StatelessWidget {
                   width: 46,
                   child: TextButton(
                     style: TextButton.styleFrom(
-                      foregroundColor: Colors.white,
+                      foregroundColor: Colors.red,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50),
                         side: const BorderSide(color: Colors.white),
@@ -70,7 +75,16 @@ class ProfilePic extends StatelessWidget {
                     onPressed: () async {
                       String image = await PickFile.pickImage(
                           imageSource: ImageSource.gallery);
-                      imagePickerProvider.setImage = image;
+                      imagePickerProvider.setImageBytes = image;
+                      String? imageUrl =
+                          await FireStoreServices.uploadOrUpdateImage(
+                              imagePath: imagePickerProvider.getImageBytes);
+                      if (imageUrl != null) {
+                        await FireStoreServices.updateCurrentUserProfile(
+                            imageUrl);
+                        imagePickerProvider.setImageUrl = imageUrl;
+                        print('the photo url is ${imagePickerProvider.getImageUrl}');
+                      }
                     },
                     child: const Icon(
                       Icons.camera_alt_outlined,

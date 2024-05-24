@@ -1,23 +1,23 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
-class ImagePickerProvider extends ChangeNotifier {
-  String _imagePath = '';
-  bool _isLoading = false;
+class ImagePickerProvider with ChangeNotifier {
 
-  String get getImage => _imagePath;
+  String _imageBytes = '';
+  String _imageUrl = '';
 
-  bool get isLoading => _isLoading;
+  String get getImageBytes => _imageBytes;
+  String get getImageUrl => _imageUrl;
 
-  set setImage(String imagePath) {
-    _imagePath = imagePath;
-    _isLoading = false;
+  set setImageBytes(String image) {
+    _imageBytes = image;
+
     notifyListeners();
   }
 
-  void setLoading(bool loading) {
-    _isLoading = loading;
+  set setImageUrl(String imageUrl) {
+    _imageUrl = imageUrl;
     notifyListeners();
   }
 
-  bool get pickImage => _imagePath.isNotEmpty;
+
 }

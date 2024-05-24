@@ -37,5 +37,6 @@ class MyApp extends StatelessWidget {
         theme: AppTheme.lightTheme(context),
       ),
     );
+
   }
 }
