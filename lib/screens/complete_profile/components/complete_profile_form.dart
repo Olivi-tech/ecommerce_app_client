@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/constants/app_routes.dart';
 import 'package:shop_app/db_services/cloud_firestore.dart';
-
 import '../../../components/custom_surfix_icon.dart';
 import '../../../components/form_error.dart';
 import '../../../constants.dart';
-import '../../otp/otp_screen.dart';
 
 class CompleteProfileForm extends StatefulWidget {
   const CompleteProfileForm({super.key});
-
   @override
   _CompleteProfileFormState createState() => _CompleteProfileFormState();
 }
@@ -25,7 +22,6 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
   String? lastName;
   String? phoneNumber;
   String? address;
-
   void addError({String? error}) {
     if (!errors.contains(error)) {
       setState(() {
@@ -67,8 +63,6 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
             decoration: const InputDecoration(
               labelText: "First Name",
               hintText: "Enter your first name",
-              // If  you are using latest version of flutter then lable text and hint text shown like this
-              // if you r using flutter less then 1.20.* then maybe this is not working properly
               floatingLabelBehavior: FloatingLabelBehavior.always,
               suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/User.svg"),
             ),
@@ -80,8 +74,6 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
             decoration: const InputDecoration(
               labelText: "Last Name",
               hintText: "Enter your last name",
-              // If  you are using latest version of flutter then lable text and hint text shown like this
-              // if you r using flutter less then 1.20.* then maybe this is not working properly
               floatingLabelBehavior: FloatingLabelBehavior.always,
               suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/User.svg"),
             ),
@@ -107,8 +99,6 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
             decoration: const InputDecoration(
               labelText: "Phone Number",
               hintText: "Enter your phone number",
-              // If  you are using latest version of flutter then lable text and hint text shown like this
-              // if you r using flutter less then 1.20.* then maybe this is not working properly
               floatingLabelBehavior: FloatingLabelBehavior.always,
               suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Phone.svg"),
             ),
@@ -133,8 +123,6 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
             decoration: const InputDecoration(
               labelText: "Address",
               hintText: "Enter your address",
-              // If  you are using latest version of flutter then lable text and hint text shown like this
-              // if you r using flutter less then 1.20.* then maybe this is not working properly
               floatingLabelBehavior: FloatingLabelBehavior.always,
               suffixIcon:
                   CustomSurffixIcon(svgIcon: "assets/icons/Location point.svg"),
@@ -150,7 +138,6 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
                   firstNameController.text,
                   lastNameController.text,
                   phoneNumberController.text);
-
               Navigator.pushNamed(context, AppRoutes.otpScreen);
             },
             //  },

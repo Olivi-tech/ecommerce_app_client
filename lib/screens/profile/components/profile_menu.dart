@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-
 import '../../../constants.dart';
 
 class ProfileMenu extends StatelessWidget {
@@ -10,11 +8,9 @@ class ProfileMenu extends StatelessWidget {
     required this.icon,
     this.press,
   }) : super(key: key);
-
   final String text;
   final IconData? icon;
   final VoidCallback? press;
-
   @override
   Widget build(BuildContext context) {
     return Padding(
