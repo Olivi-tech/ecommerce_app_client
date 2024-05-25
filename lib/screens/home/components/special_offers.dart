@@ -167,13 +167,7 @@ class _SpecialOfferCardState extends State<SpecialOfferCard> {
                             fontSize: 12,
                             fontWeight: FontWeight.w400),
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(right: 5),
-                        child: Icon(
-                          Icons.add_shopping_cart_rounded,
-                          color: AppColors.black,
-                        ),
-                      )
+                     
                     ],
                   ),
                 ),

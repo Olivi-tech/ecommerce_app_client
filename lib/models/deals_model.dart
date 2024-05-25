@@ -9,7 +9,6 @@ class DealModel {
   String? description;
   String? category;
   String? duration;
-  bool? isFavourite;
   num? price;
   num? deliveryCharges;
   num? discount;
@@ -18,7 +17,6 @@ class DealModel {
     this.imageUrl,
     this.productCode,
     this.title,
-    this.isFavourite = false,
     this.description,
     this.category,
     this.duration,
@@ -29,23 +27,22 @@ class DealModel {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'docId': docId,
-      'imageUrl': imageUrl,
-      'productCode': productCode,
+      'doc_id': docId,
+      'image_url': imageUrl,
+      'product_code': productCode,
       'title': title,
       'description': description,
       'category': category,
       'duration': duration,
-      'isFavourite': isFavourite,
       'price': price,
-      'deliveryCharges': deliveryCharges,
+      'delivery_charges': deliveryCharges,
       'discount': discount,
     };
   }
 
   factory DealModel.fromMap(Map<String, dynamic> map) {
     return DealModel(
-      docId: map['doc_Id'] ?? '',
+      docId: map['doc_id'] ?? '',
       imageUrl: map['image_url'] ?? '',
       productCode: map['product_code'] ?? '',
       title: map['title'] != null ? map['title'] as String : null,

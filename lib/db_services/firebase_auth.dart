@@ -24,34 +24,31 @@ class AuthServices {
       }
     }
   }
-
-  static Future<UserCredential?> signUp({
+  static Future<bool> signUp({
     required String email,
     required String password,
     required BuildContext context,
   }) async {
     try {
-      final credentials =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-
-      if (credentials.user != null) {
-        return credentials;
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+      if (userCredential.user != null) {
+        return true;
+      } else {
+        log('Sign-Up Failed');
+        return false;
       }
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        AppUtils.toastMessage(
-          'Week password',
-        );
-      } else if (e.code == 'email-already-in-use') {
-        AppUtils.toastMessage('Email already in use');
+      if (e.code == 'email-already-in-use') {
+        AppUtils.toastMessage('The account already exists for that email.');
+        return false;
+      } else if (e.code == 'weak-password') {
+        AppUtils.toastMessage('The password provided is too weak.');
+        return false;
       }
-    } catch (e) {
-      log('Error: ${e.toString()}');
+      AppUtils.toastMessage('Error: ${e.message}');
+      return false;
     }
-    return null;
   }
 
   static Future<bool> login({

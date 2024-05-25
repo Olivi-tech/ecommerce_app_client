@@ -173,22 +173,24 @@ class _SignUpFormState extends State<SignUpForm> {
                     _formKey.currentState!.save();
                     loading.value = true;
                     KeyboardUtil.hideKeyboard(context);
-                    await Future.delayed(const Duration(milliseconds: 100))
-                        .then((value) => AuthServices.signUp(
-                            email: emailController.text,
-                            password: passwordController.text,
-                            context: context))
-                        .then((value) async {});
+                    bool signUpSuccess = await AuthServices.signUp(
+                      email: emailController.text,
+                      password: passwordController.text,
+                      context: context,
+                    );
                     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
                       FocusScope.of(context).unfocus();
                     });
                     loading.value = false;
-                    Navigator.pushNamed(context, AppRoutes.signIn);
+                    if (signUpSuccess) {
+                      Navigator.pushNamed(context, AppRoutes.signIn);
+                    }
                   }
                 },
               );
             },
           ),
+
         ],
       ),
     );

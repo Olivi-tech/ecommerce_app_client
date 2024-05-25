@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -41,11 +40,11 @@ class ProfilePic extends StatelessWidget {
                   child: imagePickerProvider.getImageBytes.isNotEmpty ?  CircleAvatar(
                     backgroundImage: FileImage(File(imagePickerProvider.getImageBytes)),
                   ):
-                              imagePickerProvider.getImageUrl.isNotEmpty
+                              AuthServices.currentUser!.photoURL != '' && AuthServices.currentUser!.photoURL != null
                           ? ClipRRect(
                               borderRadius: BorderRadius.circular(50),
                               child:Image.network(
-                                imagePickerProvider.getImageUrl,
+                                AuthServices.currentUser!.photoURL!,
                                 fit: BoxFit.cover,
                               )
 
@@ -82,8 +81,10 @@ class ProfilePic extends StatelessWidget {
                       if (imageUrl != null) {
                         await FireStoreServices.updateCurrentUserProfile(
                             imageUrl);
+
+
                         imagePickerProvider.setImageUrl = imageUrl;
-                        print('the photo url is ${imagePickerProvider.getImageUrl}');
+
                       }
                     },
                     child: const Icon(

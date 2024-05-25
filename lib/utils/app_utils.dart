@@ -6,9 +6,9 @@ class AppUtils {
     Fluttertoast.showToast(
         msg: message,
         toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM_RIGHT,
-        backgroundColor: AppColors.blue,
-        textColor: AppColors.white,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: AppColors.greyColor,
+        textColor: AppColors.black,
         fontSize: 16.0);
   }
 }

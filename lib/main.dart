@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:shop_app/providers/image_picker_provider.dart';
 import 'firebase_options.dart';
 import 'providers/bottom_navigation_provider.dart';
+import 'providers/cart_provider.dart';
+import 'providers/dismissible_provider.dart';
 import 'routes.dart';
 import 'theme.dart';
 
@@ -19,10 +21,15 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider<DismissibleProvider>(create: (context) => DismissibleProvider(),),
+        ChangeNotifierProvider<CartProvider>(
+          create: (context) => CartProvider(),
+        ),
         ChangeNotifierProvider<ImagePickerProvider>(
           create: (context) => ImagePickerProvider(),
         ),
@@ -37,6 +44,5 @@ class MyApp extends StatelessWidget {
         theme: AppTheme.lightTheme(context),
       ),
     );
-
   }
 }

@@ -1,17 +1,22 @@
+import 'dart:developer';
+import 'dart:ffi';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:gap/gap.dart';
+import 'package:provider/provider.dart';
 import 'package:shop_app/constants/app_colors.dart';
 import 'package:shop_app/db_services/ecommerce_services.dart';
-
 import 'package:shop_app/models/deals_model.dart';
-
+import 'package:shop_app/providers/cart_provider.dart';
+import 'package:shop_app/utils/app_utils.dart';
 import '../../Widgets/custom_appbar.dart';
+import '../../models/cart_model.dart';
 
 class DealsPRoductScreen extends StatefulWidget {
   final String category;
 
   const DealsPRoductScreen({super.key, required this.category});
+
   static String routeName = "/products";
 
   @override
@@ -92,11 +97,13 @@ class _DealsPRoductScreenState extends State<DealsPRoductScreen> {
                             crossAxisSpacing: 16,
                           ),
                           itemBuilder: (context, index) => SpecialOfferCard(
+
+                            docId: displayedDeals[index].docId!,
                             price: displayedDeals[index].price,
                             title: displayedDeals[index].title!,
                             image: displayedDeals[index].imageUrl!,
                             category: displayedDeals[index].category!,
-                            press: () {},
+                            press: () async {},
                           ),
                         );
                       } else {
@@ -114,94 +121,142 @@ class _DealsPRoductScreenState extends State<DealsPRoductScreen> {
   }
 }
 
-class SpecialOfferCard extends StatelessWidget {
-  final String title, image, category;
+class SpecialOfferCard extends StatefulWidget {
+  final String title, image, category, docId;
   final num? price;
+  final int? quantity;
   final GestureTapCallback press;
 
   const SpecialOfferCard({
     Key? key,
     required this.price,
+    required this.docId,
     required this.title,
+    this.quantity,
     required this.image,
     required this.category,
     required this.press,
   }) : super(key: key);
 
   @override
+  State<SpecialOfferCard> createState() => _SpecialOfferCardState();
+}
+
+class _SpecialOfferCardState extends State<SpecialOfferCard> {
+
+  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     double width = size.width;
     double height = size.height;
-    return GestureDetector(
-      onTap: press,
-      child: SizedBox(
-        child: Container(
-          height: height * 0.5,
-          width: width * 0.5,
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(12)),
-            color: AppColors.greyColor,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: height * 0.2,
-                width: width,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Image.network(
-                    image,
-                    fit: BoxFit.cover,
+    return SizedBox(
+      child: Consumer<CartProvider>(
+        builder: (context, cart, child) {
+          int itemCount = cart.getCartItemCountByDocId(widget.docId);
+          return Container(
+            height: height * 0.5,
+            width: width * 0.5,
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(12)),
+              color: AppColors.greyColor,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: height * 0.2,
+                  width: width,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.network(
+                      widget.image,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 10, top: 5),
-                child: Text(
-                  title,
-                  style: const TextStyle(
-                      color: AppColors.black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 10, top: 5),
-                child: Text(
-                  '\$${price}',
-                  style: const TextStyle(
-                      color: AppColors.black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 10, top: 5),
-                child: SizedBox(
-                  width: width * 0.6,
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'In Stock',
-                        style: TextStyle(
-                            color: AppColors.black,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400),
-                      ),
-                      Icon(
-                        Icons.add_shopping_cart_rounded,
+                Padding(
+                  padding: const EdgeInsets.only(left: 10, top: 5),
+                  child: Text(
+                    widget.title,
+                    style: const TextStyle(
                         color: AppColors.black,
-                      )
-                    ],
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 10, top: 5),
+                  child: Text(
+                    '\$${widget.price}',
+                    style: const TextStyle(
+                        color: AppColors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700),
+                  ),
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.only(left: 10, top: 5),
+                  child: SizedBox(
+                    width: width * 0.6,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'In Stock',
+                          style: TextStyle(
+                              color: AppColors.black,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400),
+                        ),
+                        const Gap(40),
+                        if (itemCount > 0)
+                          Container(
+                            height: 18,
+                            width: 18,
+                            // padding: const EdgeInsets.all(2),
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+
+                            child: Text(
+                              '$itemCount',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        InkWell(
+                          onTap: () {
+                            CartModel model = CartModel(
+                               docId: widget.docId,
+                                quantity: 1,
+                                imageUrl: widget.image,
+                                title: widget.title,
+                                price: widget.price);
+                            EcommerceServices.uploadCartItem(cartModel: model, docId: widget.docId);
+                            log('............Docid......${widget.docId}');
+                            AppUtils.toastMessage('Item added to cart');
+                            cart.addItemToCart(model); ;
+                          },
+                          child: const Icon(
+                            Icons.add_shopping_cart_rounded,
+                            color: AppColors.black,
+                          ),
+                        ),
+            
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+                    );
+
+        },
       ),
     );
   }
