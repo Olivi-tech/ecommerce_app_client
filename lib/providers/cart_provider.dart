@@ -3,7 +3,6 @@ import 'package:shop_app/models/cart_model.dart';
 
 class CartProvider extends ChangeNotifier {
   List<CartModel> _cartItems = [];
-
   // Add item to cart
   void addItemToCart(CartModel item) {
     // Check if the item already exists in cart
@@ -19,6 +18,7 @@ class CartProvider extends ChangeNotifier {
         break;
       }
     }
+
     if (!found) {
       _cartItems.add(CartModel(
         docId: item.docId,
@@ -44,6 +44,13 @@ class CartProvider extends ChangeNotifier {
     _cartItems.forEach((item) {
       print('Uploading ${item.docId} with quantity ${item.quantity} to Firebase');
     });
+  }
+  double get totalPrice {
+    double total = 0.0;
+    for (var item in _cartItems) {
+      total += item.price! * item.quantity!;
+    }
+    return total;
   }
 }
 

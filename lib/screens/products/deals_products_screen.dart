@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:ffi';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -209,26 +210,27 @@ class _SpecialOfferCardState extends State<SpecialOfferCard> {
                               fontSize: 12,
                               fontWeight: FontWeight.w400),
                         ),
-                        const Gap(40),
-                        if (itemCount > 0)
-                          Container(
+                        Visibility(
+                          visible: itemCount > 0,
+                          child: Container(
                             height: 18,
                             width: 18,
-                            // padding: const EdgeInsets.all(2),
                             decoration: BoxDecoration(
                               color: Colors.red,
                               borderRadius: BorderRadius.circular(12),
                             ),
-
-                            child: Text(
-                              '$itemCount',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
+                            child: Center(
+                              child: Text(
+                                '$itemCount',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                ),
+                                textAlign: TextAlign.center,
                               ),
-                              textAlign: TextAlign.center,
                             ),
                           ),
+                        ),
                         InkWell(
                           onTap: () {
                             CartModel model = CartModel(
@@ -240,7 +242,7 @@ class _SpecialOfferCardState extends State<SpecialOfferCard> {
                             EcommerceServices.uploadCartItem(cartModel: model, docId: widget.docId);
                             log('............Docid......${widget.docId}');
                             AppUtils.toastMessage('Item added to cart');
-                            cart.addItemToCart(model); ;
+                            cart.addItemToCart(model);
                           },
                           child: const Icon(
                             Icons.add_shopping_cart_rounded,
