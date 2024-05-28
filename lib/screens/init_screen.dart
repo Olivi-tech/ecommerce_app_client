@@ -6,13 +6,15 @@ import 'package:shop_app/constants/app_colors.dart';
 import 'package:shop_app/screens/favorite/favorite_screen.dart';
 import 'package:shop_app/screens/home/home_screen.dart';
 import 'package:shop_app/screens/profile/profile_screen.dart';
-import '../providers/bottom_navigation_provider.dart';
+import 'package:shop_app/providers/bottom_navigation_provider.dart';
+import 'package:shop_app/providers/cart_provider.dart';
 import 'cart/cart_screen.dart';
 
 const Color inActiveIconColor = AppColors.darkGrey;
 
 class InitScreen extends StatelessWidget {
-  const InitScreen({super.key});
+  const InitScreen({Key? key}) : super(key: key);
+
   static String routeName = "/";
 
   final List<Widget> pages = const [
@@ -46,17 +48,11 @@ class InitScreen extends StatelessWidget {
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
                   "assets/icons/home.svg",
-                  colorFilter: const ColorFilter.mode(
-                    inActiveIconColor,
-                    BlendMode.srcIn,
-                  ),
+                  color: inActiveIconColor,
                 ),
                 activeIcon: SvgPicture.asset(
                   "assets/icons/home.svg",
-                  colorFilter: const ColorFilter.mode(
-                    kPrimaryColor,
-                    BlendMode.srcIn,
-                  ),
+                  color: kPrimaryColor,
                 ),
                 label: "Home",
               ),
@@ -82,24 +78,61 @@ class InitScreen extends StatelessWidget {
                 ),
                 label: "Chat",
               ),
-              const BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.shopping_cart,
-                  color: inActiveIconColor,
+              BottomNavigationBarItem(
+                icon: Consumer<CartProvider>(
+                  builder: (context, cart, _) => Stack(
+                    children: [
+                      const Icon(Icons.shopping_cart),
+                      if (cart.totalItemsInCart > 0)
+                        Positioned(
+                          right: 0,
+                          child: CircleAvatar(
+                            backgroundColor: Colors.red,
+                            radius: 8,
+                            child: Text(
+                              '${cart.totalItemsInCart}',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
                 ),
-                activeIcon: Icon(
-                  Icons.shopping_cart,
-                  color: kPrimaryColor,
+                label: 'Cart',
+                activeIcon: Consumer<CartProvider>(
+                  builder: (context, cart, _) => Stack(
+                    children: [
+                      const Icon(Icons.shopping_cart, color: kPrimaryColor),
+                      if (cart.totalItemsInCart > 0)
+                        Positioned(
+                          right: 0,
+                          child: CircleAvatar(
+                            backgroundColor: AppColors.black,
+                            radius: 8,
+                            child: Text(
+                              '${cart.totalItemsInCart}',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
                 ),
-                label: "Cart",
               ),
+
               const BottomNavigationBarItem(
                 icon: Icon(
-                  Icons.person_2_outlined,
+                  Icons.person_outline,
                   color: inActiveIconColor,
                 ),
                 activeIcon: Icon(
-                  Icons.person_2_outlined,
+                  Icons.person_outline,
                   color: kPrimaryColor,
                 ),
                 label: "Profile",

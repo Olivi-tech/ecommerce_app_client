@@ -82,4 +82,11 @@ class EcommerceServices {
       await documentSnapshot.reference.delete();
     }
   }
+  static Future<void> removeCartItemFromFirebase(String docId) async {
+    try {
+      await FirebaseFirestore.instance.collection('add_to_cart').doc(docId).delete();
+    } catch (e) {
+      print('Error deleting document: $e');
+    }
+  }
 }

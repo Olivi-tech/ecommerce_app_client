@@ -1,13 +1,19 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:shop_app/constants/app_colors.dart';
 import 'package:shop_app/db_services/ecommerce_services.dart';
+import 'package:shop_app/models/cart_model.dart';
 
 import 'package:shop_app/models/deals_model.dart';
 import 'package:shop_app/models/ecommerce_product_model.dart';
+import 'package:shop_app/providers/cart_provider.dart';
 
 import '../../Widgets/custom_appbar.dart';
+import '../../utils/app_utils.dart';
 
 class PopularProductsScreen extends StatefulWidget {
   final String category;
@@ -90,12 +96,17 @@ class _PopularProductsScreenState extends State<PopularProductsScreen> {
                         crossAxisSpacing: 16,
                       ),
                       itemBuilder: (context, index) => SpecialOfferCard(
+
+
                         price: displayedProduct[index].price,
                         title: displayedProduct[index].title!,
                         image: displayedProduct[index].imageUrl!,
                         category: displayedProduct[index].category!,
-                        press: () {},
+                        press: () {
+
+                        },
                       ),
+
                     );
                   },
                 );
@@ -108,13 +119,15 @@ class _PopularProductsScreenState extends State<PopularProductsScreen> {
   }
 }
 
-class SpecialOfferCard extends StatelessWidget {
+class SpecialOfferCard extends StatefulWidget {
   final String title, image, category;
   final num? price;
+
   final GestureTapCallback press;
 
   const SpecialOfferCard({
     Key? key,
+
     required this.price,
     required this.title,
     required this.image,
@@ -123,79 +136,91 @@ class SpecialOfferCard extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<SpecialOfferCard> createState() => _SpecialOfferCardState();
+}
+
+class _SpecialOfferCardState extends State<SpecialOfferCard> {
+  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     double width = size.width;
     double height = size.height;
     return GestureDetector(
-      onTap: press,
+      onTap: widget.press,
       child: SizedBox(
         child: Container(
-          height: height * 0.5,
-          width: width * 0.5,
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(12)),
-            color: AppColors.greyColor,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: height * 0.2,
-                width: width,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Image.network(
-                    image,
-                    fit: BoxFit.cover,
+                  height: height * 0.5,
+                  width: width * 0.5,
+                  decoration: const BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(12)),
+        color: AppColors.greyColor,
                   ),
-                ),
+                  child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            height: height * 0.2,
+            width: width,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Image.network(
+                widget.image,
+                fit: BoxFit.cover,
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 10, top: 5),
-                child: Text(
-                  title,
-                  style: const TextStyle(
-                      color: AppColors.black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 10, top: 5),
-                child: Text(
-                  '\$${price}',
-                  style: const TextStyle(
-                      color: AppColors.black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 10, top: 5),
-                child: SizedBox(
-                  width: width * 0.6,
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'In Stock',
-                        style: TextStyle(
-                            color: AppColors.black,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400),
-                      ),
-                      Icon(
-                        Icons.add_shopping_cart_rounded,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 10, top: 5),
+            child: Text(
+              widget.title,
+              style: const TextStyle(
+                  color: AppColors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 10, top: 5),
+            child: Text(
+              '\$${widget.price}',
+              style: const TextStyle(
+                  color: AppColors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700),
+            ),
+          ),
+          Padding(
+            padding:  EdgeInsets.only(left: 10, top: 5),
+            child: SizedBox(
+              width: width * 0.6,
+              child:  Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'In Stock',
+                    style: TextStyle(
                         color: AppColors.black,
-                      )
-                    ],
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400),
+                  ),
+
+
+
+
+
+
+                   const Icon(
+                      Icons.add_shopping_cart_rounded,
+                      color: AppColors.black,
+                    ),
+
+                ],
+              ),
+            ),
+          ),
+        ],
                   ),
                 ),
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }

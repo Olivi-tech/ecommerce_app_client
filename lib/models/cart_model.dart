@@ -14,6 +14,23 @@ class CartModel {
     this.title,
     this.price,
   });
+
+
+  CartModel copyWith({
+    int? quantity,
+    double? price,
+    String? imageUrl,
+    String? title,
+  }) {
+    return CartModel(
+      docId: this.docId,
+      quantity: quantity ?? this.quantity,
+      price: price ?? this.price,
+      imageUrl: imageUrl ?? this.imageUrl,
+      title: title ?? this.title,
+    );
+  }
+
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'quantity': quantity,
