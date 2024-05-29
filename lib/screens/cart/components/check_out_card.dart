@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/constants/app_routes.dart';
 import '../../../providers/cart_provider.dart';
 class CheckoutCard extends StatelessWidget {
   const CheckoutCard({
@@ -56,7 +57,9 @@ class CheckoutCard extends StatelessWidget {
                     ),
                     Expanded(
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(context,AppRoutes.cartCard);
+                        },
                         child: const Text("Check Out"),
                       ),
                     ),

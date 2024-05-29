@@ -15,4 +15,5 @@ class AppRoutes {
   static const chat = '/chat';
   static const setting = '/setting';
   static const drawer = '/drawer';
+  static const cartCard = '/checkoutCart';
 }

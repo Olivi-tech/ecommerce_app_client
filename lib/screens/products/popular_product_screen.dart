@@ -97,7 +97,7 @@ class _PopularProductsScreenState extends State<PopularProductsScreen> {
                       ),
                       itemBuilder: (context, index) => SpecialOfferCard(
 
-
+                        docId: '${displayedProduct[index].docId}',
                         price: displayedProduct[index].price,
                         title: displayedProduct[index].title!,
                         image: displayedProduct[index].imageUrl!,
@@ -120,15 +120,17 @@ class _PopularProductsScreenState extends State<PopularProductsScreen> {
 }
 
 class SpecialOfferCard extends StatefulWidget {
-  final String title, image, category;
+  final String title, image, category,docId;
   final num? price;
-
+  final int? quantity;
   final GestureTapCallback press;
 
   const SpecialOfferCard({
     Key? key,
 
     required this.price,
+    required this.docId,
+    this.quantity,
     required this.title,
     required this.image,
     required this.category,
@@ -148,79 +150,115 @@ class _SpecialOfferCardState extends State<SpecialOfferCard> {
     return GestureDetector(
       onTap: widget.press,
       child: SizedBox(
-        child: Container(
-                  height: height * 0.5,
-                  width: width * 0.5,
-                  decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(12)),
-        color: AppColors.greyColor,
-                  ),
-                  child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            height: height * 0.2,
-            width: width,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Image.network(
-                widget.image,
-                fit: BoxFit.cover,
+
+        child: Consumer<CartProvider>(
+          builder: (context, cart, child) {
+            int itemCount = cart.getCartItemCountByDocId(widget.docId);
+            log('.............Document....${widget.docId}');
+            return Container(
+                    height: height * 0.5,
+                    width: width * 0.5,
+                    decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+          color: AppColors.greyColor,
+                    ),
+                    child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: height * 0.2,
+              width: width,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.network(
+                  widget.image,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 10, top: 5),
-            child: Text(
-              widget.title,
-              style: const TextStyle(
-                  color: AppColors.black,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700),
+            Padding(
+              padding: const EdgeInsets.only(left: 10, top: 5),
+              child: Text(
+                widget.title,
+                style: const TextStyle(
+                    color: AppColors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700),
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 10, top: 5),
-            child: Text(
-              '\$${widget.price}',
-              style: const TextStyle(
-                  color: AppColors.black,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700),
+            Padding(
+              padding: const EdgeInsets.only(left: 10, top: 5),
+              child: Text(
+                '\$${widget.price}',
+                style: const TextStyle(
+                    color: AppColors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700),
+              ),
             ),
-          ),
-          Padding(
-            padding:  EdgeInsets.only(left: 10, top: 5),
-            child: SizedBox(
-              width: width * 0.6,
-              child:  Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'In Stock',
-                    style: TextStyle(
+            Padding(
+              padding:  EdgeInsets.only(left: 10, top: 5),
+              child: SizedBox(
+                width: width * 0.6,
+                child:  Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'In Stock',
+                      style: TextStyle(
+                          color: AppColors.black,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    Visibility(
+                      visible: itemCount > 0,
+                      child: Container(
+                        height: 18,
+                        width: 18,
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Center(
+                          child: Text(
+                            '$itemCount',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        CartModel model = CartModel(
+                            docId: widget.docId,
+                            quantity: 1,
+                            imageUrl: widget.image,
+                            title: widget.title,
+                            price: widget.price);
+                        EcommerceServices.uploadCartItem(cartModel: model, docId: widget.docId);
+                        log('............Docid......${widget.docId}');
+                        AppUtils.toastMessage('Item added to cart');
+                        cart.addItemToCart(model);
+                      },
+                      child: const Icon(
+                        Icons.add_shopping_cart_rounded,
                         color: AppColors.black,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400),
-                  ),
-
-
-
-
-
-
-                   const Icon(
-                      Icons.add_shopping_cart_rounded,
-                      color: AppColors.black,
+                      ),
                     ),
 
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
-                  ),
-                ),
+          ],
+                    ),
+                  );
+          },
+        ),
       ),
     );
   }

@@ -9,7 +9,6 @@ import '../../constants.dart';
 import '../../constants/app_colors.dart';
 import '../../db_services/ecommerce_services.dart';
 import '../../providers/dismissible_provider.dart';
-import 'components/cart_card.dart';
 import 'components/check_out_card.dart';
 import 'components/custom_text.dart';
 class CartScreen extends StatefulWidget {
@@ -107,7 +106,7 @@ class _CartScreenState extends State<CartScreen> {
                         ),
                   );
                 } else {
-                  return const Center(child: Text('No Data'));
+                  return const Center(child:const  Text('No Data'));
                 }
               },
             )

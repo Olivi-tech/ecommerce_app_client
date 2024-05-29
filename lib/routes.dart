@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop_app/screens/cart/components/cart_card.dart';
 import 'package:shop_app/screens/chat_screen.dart';
 import 'package:shop_app/screens/home/home_screen.dart';
 import 'package:shop_app/screens/init_screen.dart';
@@ -56,7 +57,11 @@ Route onGenerateRoute(RouteSettings settings) {
     return animatePage(PopularProductsScreen(
       category: popularCategory,
     ));
-  } else {
+  }else if (settings.name == AppRoutes.cartCard) {
+    return animatePage(const CartCard());
+  }
+
+  else {
     return animatePage(const SplashScreen());
   }
 }

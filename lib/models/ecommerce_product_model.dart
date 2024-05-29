@@ -24,23 +24,17 @@ class EcommerceProductModel {
     this.discount,
   });
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'doc_id': docId,
-      'image_url': imageUrl,
-      'product_code': productCode,
-      'title': title,
-      'description': description,
-      'category': category,
-      'price': price,
-      'delivery_charges': deliveryCharges,
-      'discount': discount,
-    };
-  }
+
 
   factory EcommerceProductModel.fromMap(Map<String, dynamic> map) {
+    if (map['docId'] == null) {
+      print('doc_id is null');
+    } else {
+      print('doc_id is not null');
+    }
     return EcommerceProductModel(
-      docId: map['doc_id'] != null ? map['doc_id'] as String : null,
+      docId: map['docId'] != null ? map['docId'] as String : null,
+
       imageUrl: map['image_url'] != null ? map['image_url'] as String : null,
       productCode:
           map['product_code'] != null ? map['product_code'] as String : null,
@@ -56,42 +50,4 @@ class EcommerceProductModel {
     );
   }
 
-  String toJson() => json.encode(toMap());
-
-  factory EcommerceProductModel.fromJson(String source) =>
-      EcommerceProductModel.fromMap(
-          json.decode(source) as Map<String, dynamic>);
-
-  @override
-  String toString() {
-    return 'EcommerceProductModel(docId: $docId, imageUrl: $imageUrl, productCode: $productCode, title: $title, description: $description, category: $category, price: $price, deliveryCharges: $deliveryCharges, discount: $discount)';
-  }
-
-  @override
-  bool operator ==(covariant EcommerceProductModel other) {
-    if (identical(this, other)) return true;
-
-    return other.docId == docId &&
-        other.imageUrl == imageUrl &&
-        other.productCode == productCode &&
-        other.title == title &&
-        other.description == description &&
-        other.category == category &&
-        other.price == price &&
-        other.deliveryCharges == deliveryCharges &&
-        other.discount == discount;
-  }
-
-  @override
-  int get hashCode {
-    return docId.hashCode ^
-        imageUrl.hashCode ^
-        productCode.hashCode ^
-        title.hashCode ^
-        description.hashCode ^
-        category.hashCode ^
-        price.hashCode ^
-        deliveryCharges.hashCode ^
-        discount.hashCode;
-  }
 }
