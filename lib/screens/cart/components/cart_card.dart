@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/screens/cart/components/address.dart';
+import 'package:shop_app/screens/cart/components/preview_screen.dart';
 import '../../../constants/app_colors.dart';
 
 class CartCard extends StatefulWidget {
@@ -51,8 +52,8 @@ class _CartCardState extends State<CartCard> with TickerProviderStateMixin {
 
               tabs: [
                 Text('ADDRESS', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 12)),
+                Text('PREVIEW', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 12)),
                 Text('PAYMENT', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 12)),
-                Text('SUMMARY', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 12)),
               ],
             ),
           ),
@@ -60,7 +61,7 @@ class _CartCardState extends State<CartCard> with TickerProviderStateMixin {
         body:   TabBarView(
           children: [
            AddressScreen(controller: _tabController,),
-            Text('Payment Content', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 12)),
+            PreviewScreen(),
             Text('Summary Content', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 12)),
           ],
         ),

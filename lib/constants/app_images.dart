@@ -3,4 +3,5 @@ class AppImages {
   static const sparkle = 'assets/icons/sparkle .png';
   static const lockicon = 'assets/icons/lock_icon.png';
   static const apple = 'assets/icons/apple.png';
+  static const shirt = 'assets/images/product 1 image.png';
 }

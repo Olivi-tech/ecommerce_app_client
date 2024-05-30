@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/screens/cart/components/cart_card.dart';
+import 'package:shop_app/screens/cart/components/payment.dart';
 import 'package:shop_app/screens/chat_screen.dart';
 import 'package:shop_app/screens/home/home_screen.dart';
 import 'package:shop_app/screens/init_screen.dart';
@@ -33,9 +34,10 @@ Route onGenerateRoute(RouteSettings settings) {
     return animatePage(const HomeScreen());
   } else if (settings.name == AppRoutes.setting) {
     return animatePage(const ProfileScreen());
-  } else if (settings.name == AppRoutes.chat) {
-    return animatePage(const ChatScreen());
-  } else if (settings.name == AppRoutes.dealsSeemore) {
+  }else if (settings.name == AppRoutes.payment) {
+    return animatePage(const PaymentScreen());
+  }
+  else if (settings.name == AppRoutes.dealsSeemore) {
     return animatePage(const DealsScreen());
   } else if (settings.name == AppRoutes.productSeemore) {
     final Map<String, dynamic> categoriesproduct =

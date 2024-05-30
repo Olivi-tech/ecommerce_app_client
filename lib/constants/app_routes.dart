@@ -16,4 +16,5 @@ class AppRoutes {
   static const setting = '/setting';
   static const drawer = '/drawer';
   static const cartCard = '/checkoutCart';
+  static const payment = '/PaymentScreen';
 }

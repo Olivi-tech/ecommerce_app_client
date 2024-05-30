@@ -2,29 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:shop_app/Widgets/custon_form_field.dart';
-
 import '../../../Widgets/custom_button.dart';
 import '../../../constants/app_colors.dart';
 import '../../../helper/keyboard.dart';
-
 class AddressScreen extends StatefulWidget {
   final TabController controller;
-  const AddressScreen({super.key,required this.controller});
-
-
+  const AddressScreen({super.key, required this.controller});
   @override
   State<AddressScreen> createState() => _AddressScreenState();
-
 }
-
 final _formKey = GlobalKey<FormState>();
-
 class _AddressScreenState extends State<AddressScreen> {
-
-  @override
   void _navigateToPayment(BuildContext context) {
-    widget.controller.animateTo(1);
+    widget.controller.animateTo(1); // Move to the second tab
   }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
@@ -110,14 +102,13 @@ class _AddressScreenState extends State<AddressScreen> {
                 child: CustomButton(
                   fixedHeight: 50,
                   fixedWidth: 200,
-                  btnText: 'CONTINUE TO PAYMENT',
+                  btnText: 'CONTINUE TO PREVIEW',
                   weight: FontWeight.w500,
                   backgroundColor: AppColors.red,
                   textColor: AppColors.white,
                   onPressed: () async {
                     KeyboardUtil.hideKeyboard(context);
                     _navigateToPayment(context);
-
                   },
                 ),
               ),
